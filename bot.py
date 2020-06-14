@@ -39,4 +39,4 @@ async def warn(ctx, content, member: discord.Member):
     await ctx.send("I Warned Them")
     await member.send(f"You were warned for {content}") # send dm
 
-bot.run("NzIwMzI1MzE1MDU4MDczNjkw.XuEVSQ.CT0yCi2Z_4Uw73QQ06zF4VrTL0Y")
+bot.run("YOUR_TOKEN_HERE")
