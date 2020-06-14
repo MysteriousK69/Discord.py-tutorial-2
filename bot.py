@@ -1,32 +1,42 @@
-import discord # Import discord
-from discord.ext import commands # from discord.ext import commands
-from discord.ext.commands import bot # from discord.ext.commands import bot
+import discord
+from discord.ext import commands
+from discord.ext.commands import bot
 
-bot = commands.Bot(ocmmand_prefix='!') # set your bots prefix
+bot = commands.Bot(command_prefix="!")
 
-token = 'token here' # ADD YOUR BOTS TOKEN HERE
+@bot.event
+async def on_ready(): # on_ready func
+    print("The bot is online!")
 
-@bot.command(pass_context=True)
-@commands.has_role("Admin") # add a role requirement to run the commmand
-async def ban(ctx, content, member: discord.Member):
+@bot.command()
+async def hello(ctx):
+    await ctx.send("sup kiddo :wave:")
+    print("A random nerd used the hello command!")
+
+@bot.command()
+async def ban(ctx, member: discord.Member, content):
+    await ctx.send("I Successfully Banned") # send msg in channel
+    await member.send(f"You were banned for {content} get rekt") # send dm
+    await member.ban() # ban
+
+@bot.command()
+async def kick(ctx, member: discord.Member, content):
     try:
-        await member.send(f"You were banned for {content}") # send a dm to the user informing that they were banned
-        await member.ban() # ban a user
-        await ctx.send("Successfully banned them") # send a msg in chat informing the admin that user was banned
+        await ctx.send("Kicked Them") # send msg in channel
+        await member.send(f"You were kicked for {content} get rekt") # send dm
+        await member.kick() # kick
     except:
-        await ctx.send("You dont have perms to perform that action or you did not mentiona  valid user/did not give a valid reason") # send a error msg saying user was not banned
-        await ctx.send("try doing it this way: !ban { member} {reason}") # give the right format for banning users
+        await ctx.send("Kicked Them")
+        await member.kick()
 
-@bot.command(pass_context=True)
-@commands.has_role("Admin") # add a role requirement to run the commmand
-async def kick(ctx, content, member: discord.Member):
-    try:
-        await member.send(f"You were kicked for {content}") # send a dm to the user informing that they were kicked
-        await member.kick() #kick a user
-        await ctx.send("Successfully kicked them") # send a msg in chat informing the admin that suer was banned
-    except:
-        await ctx.send("You dont have perms to perform that action or you did not mention a valid user/did not give a valid reason") # send a error msg saying user was not kicked
-        await ctx.send("try doing it this way: !kick { member} {reason}") # give the right format for kicking users
+@bot.command()
+async def purge(ctx, content):
+    amount = int(content) # def amount var
+    await ctx.channel.purge(limit=amount + 1) # purge
 
+@bot.command()
+async def warn(ctx, content, member: discord.Member):
+    await ctx.send("I Warned Them")
+    await member.send(f"You were warned for {content}") # send dm
 
-bot.run(token) # run the bot
+bot.run("NzIwMzI1MzE1MDU4MDczNjkw.XuEVSQ.CT0yCi2Z_4Uw73QQ06zF4VrTL0Y")
